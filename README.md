@@ -11,16 +11,16 @@
       src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
   <h1>Copy Webpack Plugin</h1>
-  <p>Copies individual files or entire directories to the build directory</p>
+  <p>将单个文件或整个目录复制到构建目录.</p>
 </div>
 
-<h2 align="center">Install</h2>
+<h2 align="center">安装</h2>
 
 ```bash
 npm i -D copy-webpack-plugin
 ```
 
-<h2 align="center">Usage</h2>
+<h2 align="center">用法</h2>
 
 **webpack.config.js**
 ```js
@@ -33,36 +33,38 @@ const config = {
 }
 ```
 
-> ℹ️ If you want `webpack-dev-server` to write files to the output directory during development, you can force it with the [`write-file-webpack-plugin`](https://github.com/gajus/write-file-webpack-plugin).
+> ℹ️ 如果你希望`webpack-dev-server`在开发过程中将文件写入输出目录，你可以关注 [`write-file-webpack-plugin`](https://github.com/gajus/write-file-webpack-plugin) 。
 
-### `Patterns`
+### `模式`
 
-A simple pattern looks like this
+一个简单的模式是这样的
 
 ```js
 { from: 'source', to: 'dest' }
 ```
 
-Or, in case of just a `from` with the default destination, you can also use a `{String}` as shorthand instead of an `{Object}`
+或者, in case of just a `from` with the default destination, you can also use a `{String}` as shorthand instead of an `{Object}`
+
+或者，也可以简化不使用对象，只写一个字符串的作为 `from` 的默认值。
 
 ```js
 'source'
 ```
 
-|Name|Type|Default|Description|
+|选项名|类型|默认值|描述|
 |:--:|:--:|:-----:|:----------|
-|[`from`](#from)|`{String\|Object}`|`undefined`|Globs accept [minimatch options](https://github.com/isaacs/minimatch)|
-|[`fromArgs`](#fromArgs)|`{Object}`|`{ cwd: context }`|See the [`node-glob` options](https://github.com/isaacs/node-glob#options) in addition to the ones below|
-|[`to`](#to)|`{String\|Object}`|`undefined`|Output root if `from` is file or dir, resolved glob path if `from` is glob|
-|[`toType`](#toType)|`{String}`|``|[toType Options](#totype)|
-|[`test`](#test)|`{RegExp}`|``|Pattern for extracting elements to be used in `to` templates|
-|[`force`](#force)|`{Boolean}`|`false`|Overwrites files already in `compilation.assets` (usually added by other plugins/loaders)|
-|[`ignore`](#ignore)|`{Array}`|`[]`|Globs to ignore for this pattern|
-|`flatten`|`{Boolean}`|`false`|Removes all directory references and only copies file names.⚠️ If files have the same name, the result is non-deterministic|
-|[`transform`](#transform)|`{Function\|Promise}`|`(content, path) => content`|Function or Promise that modifies file contents before copying|
-|[`transformPath`](#transformPath)|`{Function\|Promise}`|`(targetPath, sourcePath) => path`|Function or Promise that modifies file writing path|
-|[`cache`](#cache)|`{Boolean\|Object}`|`false`|Enable `transform` caching. You can use `{ cache: { key: 'my-cache-key' } }` to invalidate the cache|
-|[`context`](#context)|`{String}`|`options.context \|\| compiler.options.context`|A path that determines how to interpret the `from` path|
+|[`from`](#from)|`{String\|Object}`|`undefined`|Globs接受 [minimatch选项](https://github.com/isaacs/minimatch)|
+|[`fromArgs`](#fromArgs)|`{Object}`|`{ cwd: context }`| 除了下面的还可以参照 [`node-glob` 选项](https://github.com/isaacs/node-glob#options) |
+|[`to`](#to)|`{String\|Object}`|`undefined`|如果 `from` 是文件或者路径则返回路径，如果 `from` 是glob选项则解析glob路径|
+|[`toType`](#toType)|`{String}`|``|[toType 选项](#totype)|
+|[`test`](#test)|`{RegExp}`|``|用于提取要在`to`模板中使用的元素的模式|
+|[`force`](#force)|`{Boolean}`|`false`|覆盖已经在`compilation.assets`中的文件（通常由其他插件/加载器添加）|
+|[`ignore`](#ignore)|`{Array}`|`[]`|要忽略这种模式的Globs|
+|`flatten`|`{Boolean}`|`false`|删除所有目录引用，仅复制文件名。 ⚠️ 如果文件具有相同的名称，则结果是不确定的|
+|[`transform`](#transform)|`{Function\|Promise}`|`(content, path) => content`|复制之前使用 Function 或 Promise 修改文件。|
+|[`transformPath`](#transformPath)|`{Function\|Promise}`|`(targetPath, sourcePath) => path`|Function 或者 Promise 修改文件写入路径。|
+|[`cache`](#cache)|`{Boolean\|Object}`|`false`|启用`transform`缓存。 您可以使用`{cache：{key：'my-cache-key'}}`来使缓存无效。|
+|[`context`](#context)|`{String}`|`options.context \|\| compiler.options.context`|确定如何解释`from`的路径|
 
 ### `from`
 
@@ -94,11 +96,11 @@ Or, in case of just a `from` with the default destination, you can also use a `{
 
 ### `toType`
 
-|Name|Type|Default|Description|
+|名称|类型|默认值|描述|
 |:--:|:--:|:-----:|:----------|
-|**`'dir'`**|`{String}`|`undefined`|If `from` is directory, `to` has no extension or ends in `'/'`|
-|**`'file'`**|`{String}`|`undefined`|If `to` has extension or `from` is file|
-|**`'template'`**|`{String}`|`undefined`|If `to` contains [a template pattern](https://github.com/webpack-contrib/file-loader#placeholders)|
+|**`'dir'`**|`{String}`|`undefined`|如果`from`是目录，`to`没有扩展名或以/'结尾|
+|**`'file'`**|`{String}`|`undefined`|如果`to`有扩展名或`from`是文件|
+|**`'template'`**|`{String}`|`undefined`|如果`to`包含 [模板模式](https://github.com/webpack-contrib/file-loader#placeholders)|
 
 #### `'dir'`
 
@@ -147,11 +149,7 @@ Or, in case of just a `from` with the default destination, you can also use a `{
 
 ### `test`
 
-Defines a `{RegExp}` to match some parts of the file path.
-These capture groups can be reused in the name property using `[N]` placeholder.
-Note that `[0]` will be replaced by the entire path of the file,
-whereas `[1]` will contain the first capturing parenthesis of your `{RegExp}`
-and so on...
+定义`{RegExp}`以匹配文件路径的某些部分。 可以使用`[N]`占位符在name属性中重用这些捕获组。 请注意，`[0]`将替换为文件的整个路径，而`[1]`将包含`{RegExp}`的第一个捕获括号，依此类推......
 
 **webpack.config.js**
 ```js
@@ -301,22 +299,22 @@ and so on...
 ]
 ```
 
-<h2 align="center">Options</h2>
+<h2 align="center">选项</h2>
 
-|Name|Type|Default|Description|
+|选项|类型|默认值|描述|
 |:--:|:--:|:-----:|:----------|
-|[`debug`](#debug)|`{String}`|**`'warning'`**|[Debug Options](#debug)|
-|[`ignore`](#ignore)|`{Array}`|`[]`|Array of globs to ignore (applied to `from`)|
-|[`context`](#context)|`{String}`|`compiler.options.context`|A path that determines how to interpret the `from` path, shared for all patterns|
-|[`copyUnmodified`](#copyUnmodified)|`{Boolean}`|`false`|Copies files, regardless of modification when using watch or `webpack-dev-server`. All files are copied on first build, regardless of this option|
+|[`debug`](#debug)|`{String}`|**`'warning'`**|[Debug 选项](#debug)|
+|[`ignore`](#ignore)|`{Array}`|`[]`|要忽略的数组 (应用到 `from`)|
+|[`context`](#context)|`{String}`|`compiler.options.context`|确定如何解释`from`的路径, 所有模式都有效|
+|[`copyUnmodified`](#copyUnmodified)|`{Boolean}`|`false`|使用watch或`webpack-dev-server`时，无论修改如何，都会复制文件。 无论此选项如何，所有文件都在第一次构建时复制。|
 
 ### `debug`
 
-|Name|Type|Default|Description|
+|名称|类型|默认值|描述|
 |:--:|:--:|:-----:|:----------|
-|**`'info'`**|`{String\|Boolean}`|`false`|File location and read info|
-|**`'debug'`**|`{String}`|`false`|Very detailed debugging info|
-|**`'warning'`**|`{String}`|`true`|Only warnings|
+|**`'info'`**|`{String\|Boolean}`|`false`|文件位置和读取信息|
+|**`'debug'`**|`{String}`|`false`|非常详细的调试信息|
+|**`'warning'`**|`{String}`|`true`|只是警告信息|
 
 #### `'info'`
 
@@ -380,7 +378,7 @@ and so on...
 
 ### `copyUnmodified`
 
-> ℹ️ By default, we only copy **modified** files during a `webpack --watch` or `webpack-dev-server` build. Setting this option to `true` will copy all files.
+> ℹ️ 在使用`webpack --watch` 或者`webpack-dev-server` 构建的时候，默认只是复制**修改的** 文件。设置为 `true`的时候就复制所有的文件。
 
 **webpack.config.js**
 ```js
@@ -392,7 +390,7 @@ and so on...
 ]
 ```
 
-<h2 align="center">Maintainers</h2>
+<h2 align="center">维护者</h2>
 
 <table>
   <tbody>
